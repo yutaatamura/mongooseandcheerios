@@ -24,6 +24,7 @@ var ArticleSchema = new Schema({
     },
     picture: {
         type: String, 
+        required: true
         
     },
     comment: {
@@ -32,7 +33,7 @@ var ArticleSchema = new Schema({
     }
 });
 
-//Creates out model from the above schema, using mongoose's model method
+//Creates model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 
 //Export the Article model

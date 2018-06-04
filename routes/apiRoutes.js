@@ -1,11 +1,22 @@
 const express = require("express");
-const db = require("../models");
 const request = require("request");
 const cheerio = require("cheerio");
+const db = require("../models");
 //Axios is a promise-based http library, similar to jQuery's AJAX method; works on the client and on the server
 const axios = require("axios");
 
 module.exports = function(router){
+
+router.get("/", function(req, res) {
+    db.Article.find({}, null, {sort: {created: -1}}, function(err, data) {
+        if (data) {
+            res.render("index", {articles: data});
+        } else {
+            res.json(err);
+        }
+    });
+   
+});
 
 router.get("/scrape", function(req, res) {
     
@@ -16,38 +27,34 @@ console.log("\n***********************************\n" +
 "\n***********************************\n");
 
 //Grab body of the html with request 
-axios.get("https://www.nytimes.com/section/science?action=click&contentCollection=health&region=navbar&module=collectionsnav&pagetype=sectionfront&pgtype=sectionfront")
+axios.get("https://www.nytimes.com/section/science")
 .then(function(response) {
 
 // Load the HTML into cheerio and save it to a variable
 // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-const $ = cheerio.load(response.data);
-
-// An empty array to save the data that we'll scrape
-const results = {};
+let $ = cheerio.load(response.data);
 
 // With cheerio, find each p-tag with the "title" class
 // (i: iterator. element: the current element)
-$("div.story-body").each(function(i, element) {
+$("section.latest-panel").find("div.story-body").each(function(i, element) {
+// An empty array to save the data that we'll scrape
 
+let results = [];
 // Save the text of the element in a "headline" variable
-results.headline = $(element).find("h2").text().trim();
-
-results.summary = $(element).find("p.summary").text().trim();
-results.author = $(element).find("p.byline").text().trim();
-
-results.link = $(element).find("a").attr("href");
-
-results.picture = $(element).find("img").attr("src");
+const headline = $(this).find("h2").text().trim();
+const summary = $(this).find("p.summary").text().trim();
+const author = $(this).find("p.byline").text().trim();
+const link = $(this).find("a").attr("href");
+const picture = $(this).find("img").attr("src");
 
 // Save these results in an object that we'll push into the results array we defined earlier
-// results.push({
-// headline: headline,
-// summary: summary,
-// author: author,
-// link: link,
-// picture: picture
-// });
+results.push({
+headline: headline,
+summary: summary,
+author: author,
+link: link,
+picture: picture
+});
 // });
 
 // Log the results once you've looped through each of the elements found with cheerio
@@ -62,15 +69,13 @@ db.Article.create(results)
     });
 });
 
-res.send("Scrape Complete");
-})
+console.log("Scrape Complete");
+res.redirect("/");
+});
 
 });
 
-router.get("/", function(req, res) {
 
-        res.render("index");
-    });
 
 }
 
