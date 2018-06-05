@@ -8,11 +8,13 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
     headline: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     summary: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     author: {
         type: String,
@@ -20,12 +22,21 @@ var ArticleSchema = new Schema({
     },
     link: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     picture: {
         type: String, 
         required: true
         
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now
+    },
+    saved: {
+        type:Boolean,
+        default: false
     },
     comment: {
         type: Schema.Types.ObjectId,

@@ -6,11 +6,22 @@
         </div>
     </div>
 </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <form action="/scrape" method="GET">
+            <button id="scrapeBtn" type="button" class="btn btn-primary">Scrape New Articles</button>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+
 <div class="container-fluid article-container">
     <div class="container">
         <h1>Latest News</h1>
         {{#each articles}}
-        <div class="row border border-info h-100" id={{this._id}} style="margin-bottom: 25px; background-color: rgb(255, 255, 255)">
+        <div class="row border border-dark h-100" id={{this._id}} style="margin-bottom: 25px; background-color: rgb(255, 255, 255)">
             <div class="col-md-4 picture my-auto" style="text-align: center; vertical-align: middle">
                 <img class="img-thumbnail" style="width: 250px; height:180.63px" src={{this.picture}}>
             </div>
@@ -19,7 +30,25 @@
                 
                 <p>{{this.summary}}</p>
                 <p>{{this.author}}</p>
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownComment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add Comment
+                            </button>
 
+                            <div class="dropdown-menu" style="width: 300px; height: 400px">
+                                <form class="px-4 py-3">
+                                    <div class="form-group form-group-lg">
+                                        <label for="comment">Comment</label>
+                                        <textarea type="text" class="form-control" id="comment" placeholder="Your insight here" style="height: 250px"></textarea>
+                                    </div>
+                                    <button id="commentBtn" type="submit" class="btn btn-primary" data-id="{{this._id}}">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             
             </div>
         </div>

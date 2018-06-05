@@ -76,6 +76,57 @@ res.redirect("/");
 });
 
 
+router.get("/articles/:id", function(req, res) {
+    db.Article.findOne({
+        _id: req.params.id
+    })
+    .populate("comment")
+    .then(function(dbArticle) {
+        res.json(dbArticle);
+    })
+    .catch(function(err) {
+        res.json(err);
+    });
+});
+
+
+router.post("/note/:id", function(req, res) {
+
+    let id = req.params.id;
+
+    db.Comment.create(req.body)
+    .then(function(dbComment) {
+        return db.Article.findOneAndUpdate({ 
+            _id: id 
+        }, {
+            comment: dbComment._id
+        }, {
+            new: true
+        });
+    })
+    .then(function(dbArticle) {
+        res.json(dbArticle);
+    })
+    .catch(function(err) {
+        res.json(err);
+    });
+});
+
+
+router.delete('/note/:id', function(req, res ) {
+    let id = req.params.id;
+
+    db.Comment.remove({
+        _id: id
+    })
+    .then(function(dbComment) {
+        res.json({message: "Comment removed!"})
+    })
+    .catch(function(err) {
+        res.json(err);
+    });
+});
+
 
 }
 
