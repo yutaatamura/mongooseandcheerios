@@ -9,7 +9,7 @@ const request = require("request");
 //Initialize Express
 const app = express();
 const port = process.env.PORT || 8989;
-const db = require("./models");
+
 
 // Configure middleware
 
