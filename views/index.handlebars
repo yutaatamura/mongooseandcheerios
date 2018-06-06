@@ -32,8 +32,9 @@
                 <p>{{this.author}}</p>
                 <div class="row">
                     <div class="col-md-12" style="text-align: right">
+                        <a href="#" id="displayComments" data-id="{{this._id}}">Comments<span id="commentCount"></span></a> 
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownComment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownComment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style= "float: right">
                             Add Comment
                             </button>
 
@@ -41,9 +42,9 @@
                                 <form class="px-4 py-3">
                                     <div class="form-group form-group-lg">
                                         <label for="comment">Comment</label>
-                                        <textarea type="text" class="form-control" id="comment" placeholder="Your insight here" style="height: 250px"></textarea>
+                                        <textarea type="text" class="form-control comment" placeholder="Your insight here" style="height: 250px"></textarea>
                                     </div>
-                                    <button id="commentBtn" type="submit" class="btn btn-primary" data-id="{{this._id}}">Submit</button>
+                                    <button type="submit" class="btn btn-primary commentBtn" data-id="{{this._id}}">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -53,5 +54,11 @@
             </div>
         </div>
         {{/each}}
+    </div>
+</div>
+
+<div class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
     </div>
 </div>
