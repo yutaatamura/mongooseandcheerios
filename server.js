@@ -34,7 +34,7 @@ require("./routes/apiRoutes")(router);
 app.use(router);
 
 //Connect to Mongo DB 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://heroku_zvr64z25:v5lar9rjvaajoh2srvld2rgafr@ds139950.mlab.com:39950/heroku_zvr64z25";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongonews";
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
