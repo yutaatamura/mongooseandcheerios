@@ -35,16 +35,17 @@ function newComment() {
         })
         .then(function(data) {
             $('#comment').val('');
+            console.log("now im here")
             location.reload();
         })
     }
 }
 
 
-$("#displayComments").on("click", displayComment);
+$(".displayComments").on("click", displayComment);
 
 function displayComment() {
-    event.preventDefault();
+    
     let id = $(this).data('id');
 
     $.ajax({
@@ -55,6 +56,7 @@ function displayComment() {
         $('.modal-content').html(
             `<div class="modal-header">
                 <h3 class="modal-title">${data.headline}</h3>
+                <h5>Comments</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -68,16 +70,20 @@ function displayComment() {
         );
 
         let count = data.comment.length;
-
+        console.log(count);
+        console.log(data)
         if (count == 0) {
             alert("No comments")
         } else {
             let comments = data.comment;
+            
             console.log(comments)
-            Object.keys(comments).forEach(function(comment) {
+            comments.forEach(function(comment) {
+                console.log(comment)
                 $('.list-group').append(`
-                <li class="list-group-item>
+                <li class="list-group-item">
                 ${comment.body}
+                
                 </li>
                 `
             );
@@ -86,8 +92,6 @@ function displayComment() {
         $('.modal').modal('show');
     });
 };
-
-
 
 $("#deleteComment-btn").on("click", deleteComment);
 

@@ -8,7 +8,7 @@ const axios = require("axios");
 module.exports = function(router){
 
 router.get("/", function(req, res) {
-    db.Article.find({}, null, {sort: {created: -1}}, function(err, data) {
+    db.Article.find({}, null, {sort: {timestamp: -1}}, function(err, data) {
         if (data) {
             res.render("index", {articles: data});
         } else {
@@ -75,11 +75,10 @@ res.redirect("/");
 
 });
 
-
+//Get comments
 router.get("/articles/:id", function(req, res) {
-    db.Article.findOne({
-        _id: req.params.id
-    })
+    let id = req.params.id;
+    db.Article.findById(id)
     .populate("comment")
     .then(function(dbArticle) {
         res.json(dbArticle);
@@ -90,6 +89,7 @@ router.get("/articles/:id", function(req, res) {
 });
 
 
+//Save notes
 router.post("/note/:id", function(req, res) {
 
     let id = req.params.id;
@@ -99,7 +99,10 @@ router.post("/note/:id", function(req, res) {
         return db.Article.findOneAndUpdate({ 
             _id: id 
         }, {
+            //$push makes the comment array
+            $push:{
             comment: dbComment._id
+            }
         }, {
             new: true
         });
