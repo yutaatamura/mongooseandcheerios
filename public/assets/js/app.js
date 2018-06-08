@@ -3,7 +3,7 @@ console.log("we live");
 
 $("#scrapeBtn").on("click", scrape);
 
-function scrape() {
+function scrape(event) {
     event.preventDefault();
     $.get('/scrape')
     .then(function(data) {
@@ -18,12 +18,18 @@ function scrape() {
 
 $(".commentBtn").on("click", newComment);
 
-function newComment() {
+function newComment(event) {
     
     event.preventDefault();
     
     let id = $(this).data('id');
-    let content = $(".comment").val().trim();
+
+    let content="";
+    //have to use .each here to evaluate each textarea; jQuery val() will serve only the value of one match
+    $(".comment").each(function() {
+        content += $(this).val().trim();
+    })
+    
     console.log(content)
     console.log("im here")
     if (content) {
@@ -34,7 +40,7 @@ function newComment() {
             data: {body: content}
         })
         .then(function(data) {
-            $('#comment').val('');
+            $('.comment').val('');
             console.log("now im here")
             location.reload();
         })
@@ -55,8 +61,12 @@ function displayComment() {
     .then(function(data) {
         $('.modal-content').html(
             `<div class="modal-header">
-                <h3 class="modal-title">${data.headline}</h3>
-                <h5>Comments</h5>
+                <div class="modal-title">
+                    <h3>${data.headline}</h3>
+                    <p>- ${data.author}</p>
+                    <br>
+                    <h5>Comments</h5>
+                </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -73,18 +83,27 @@ function displayComment() {
         console.log(count);
         console.log(data)
         if (count == 0) {
-            alert("No comments")
+            let noCommentMsg = `<small class="text-muted">This article currently has no comments.</small>`;
+            $('.modal-body').prepend(noCommentMsg);
         } else {
             let comments = data.comment;
             
             console.log(comments)
             comments.forEach(function(comment) {
-                console.log(comment)
-                $('.list-group').append(`
-                <li class="list-group-item">
-                ${comment.body}
                 
+                console.log(comment)
+                let commentTime = comment.timestamp;
+                 
+                    let formattedTime = moment(commentTime).format("dddd, MMMM Do YYYY, h:mm:ss a");
+                    
+                
+                $('.list-group').append(`
+                <li class="list-group-item" style="background-color: rgb(218, 215, 207)">
+                ${comment.body}
+                <hr>
+                <p>Submitted: ${formattedTime}</p>
                 </li>
+                <br>
                 `
             );
             });
