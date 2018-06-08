@@ -101,7 +101,8 @@ function displayComment() {
                 <li class="list-group-item" style="background-color: rgb(218, 215, 207)">
                 ${comment.body}
                 <hr>
-                <p>Submitted: ${formattedTime}</p>
+                <p>Submitted: ${formattedTime}<button type="button" class="btn btn-danger deleteComment float-right" data-id="${comment._id}">Delete</button></p>
+                
                 </li>
                 <br>
                 `
@@ -112,9 +113,10 @@ function displayComment() {
     });
 };
 
-$("#deleteComment-btn").on("click", deleteComment);
+//this will handle click events for dynamically added buttons
+$(document).on("click", ".deleteComment", deleteComment);
 
-function deleteComment() {
+function deleteComment(event) {
     event.preventDefault();
     let id = $(this).data('id');
 
@@ -123,7 +125,7 @@ function deleteComment() {
         method: 'DELETE'
     })
     .then(function(data) {
-
+        location.reload();
     })
 }
 

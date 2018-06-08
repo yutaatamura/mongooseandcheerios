@@ -116,7 +116,7 @@ router.post("/note/:id", function(req, res) {
 });
 
 
-router.delete('/note/:id', function(req, res ) {
+router.delete('/comment/:id', function(req, res ) {
     let id = req.params.id;
 
     db.Comment.remove({
