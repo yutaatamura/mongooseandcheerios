@@ -1,0 +1,64 @@
+<div class="jumbotron text-center">
+    <div class="container">
+        <div class="caption">
+            <h1>New York Times Science</h1>
+            <p>Mongo News Scraper</p>
+        </div>
+    </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <form action="/scrape" method="GET">
+            <button id="scrapeBtn" type="button" class="btn btn-primary">Scrape New Articles</button>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="container-fluid article-container">
+    <div class="container">
+        <h1>Latest News</h1>
+        {{#each articles}}
+        <div class="row border border-dark h-100" id={{this._id}} style="margin-bottom: 25px; background-color: rgb(255, 255, 255)">
+            <div class="col-md-4 picture my-auto" style="text-align: center; vertical-align: middle">
+                <img class="img-thumbnail" style="width: 250px; height:180.63px" src={{this.picture}}>
+            </div>
+            <div class="col-md-8 content" style="background-color:rgb(218, 215, 207)">
+                <a href="{{this.link}}" target="_blank"><h2>{{this.headline}}</h2></a>
+                
+                <p>{{this.summary}}</p>
+                <p>{{this.author}}</p>
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        <a href="#" class="displayComments" data-id="{{this._id}}">Comments<span class="commentCount"></span></a> 
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownComment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style= "float: right">
+                            Add Comment
+                            </button>
+
+                            <div class="dropdown-menu" style="width: 300px; height: 400px">
+                                <form class="px-4 py-3">
+                                    <div class="form-group form-group-lg">
+                                        <label for="comment">Comment</label>
+                                        <textarea id="{{this._id}}" type="text" class="form-control comment" placeholder="Your insight here" style="height: 250px"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary commentBtn" data-id="{{this._id}}">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<div class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
